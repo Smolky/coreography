@@ -1,0 +1,22 @@
+{
+    "name": "smolky/coreography",
+    "version": "1.0.0",
+    "description": "The Core-o-Graphy Framework.",
+    "keywords": ["framework", "coreograhpy"],
+    
+    "autoload": {
+        "psr-4": {
+            "CoreOGraphy\\": ["core/", "custom/"]
+        }
+    },
+    
+    "require": {
+        "php": ">=5.5.0",
+        "altorouter/altorouter": "1.1.0",
+        "pimple/pimple": "~3.0",
+        "twig/twig": "~1.0",
+        "swiftmailer/swiftmailer": "5.4.6",
+        "abraham/twitteroauth": "^0.7.4",
+        "philipp15b/php-i18n": "*"
+    }
+}
