@@ -1,5 +1,7 @@
 <?php
 
+namespace CoreOGraphy;
+
 /**
  * Repo
  *
@@ -113,8 +115,9 @@ abstract class Repo {
         
         // Bind data
         $result = array ();
+        $class_name = '\\' . __NAMESPACE__ . '\\' . $this->_class;
         foreach ($results as $row) {
-            $result[] = new $this->_class ($row);
+            $result[] = new $class_name ($row);
         }
         
         return $result;

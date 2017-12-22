@@ -1,6 +1,7 @@
 <?php
 
 use Pimple\Container;
+use Symfony\Component\Debug\Debug;
 
 
 /**
@@ -40,6 +41,12 @@ if (PRODUCTION) {
 require 'vendor/autoload.php';
 
 
+// Activate Debug
+if ( ! PRODUCTION) {
+    Debug::enable ();
+}
+
+
 // Dependency container
 $container = new Container ();
 
@@ -51,7 +58,7 @@ require ('custom/functions.php');
 // Database connection
 // Database info is stored at config.php
 if ($user) {
-    $database = new Database ($dsn, $user, $password);
+    $database = new \CoreOGraphy\Database ($dsn, $user, $password);
     $container['connection'] = $database;
     $container['pdo'] = $database->connect ();
 }
@@ -133,21 +140,7 @@ session_start();
 
 
 // Attach routers
-// Home page
-$router->map ('GET', '/', function () {
-
-    // To the home page, the user must be logged
-    if ( ! isset ($_SESSION['logged'])) {
-        require __DIR__ . '/controllers/login/Index.php';
-        return new Index ();
-    }
-    
-    
-    // Load the classifier page
-    require __DIR__ . '/controllers/classifier/Index.php';
-    return new Index ();
-    
-});
+require ('routes.php');
 
 
 // match current request URL
@@ -168,4 +161,5 @@ if ($match && is_callable ($match['target'])) {
 
 
 // Handle the controller
-echo $controller->handle ();
+$body = $controller->handle ();
+echo $body;

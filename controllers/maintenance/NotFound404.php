@@ -13,7 +13,7 @@ class NotFound404 extends CoreOGraphy\BaseController {
      * @package Core-o-Graphy
      */
     public function handleRequest () {
-        $this->_response->setStatus ('404 Not Found');
-        $this->_response->setContent ($this->_template->render ('404.html'));
+        $this->_response = $this->_response->withStatus (404);
+        $this->_response->getBody ()->write ($this->_template->render ('404.html'));
     }
 }

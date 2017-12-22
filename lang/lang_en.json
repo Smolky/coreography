@@ -1,3 +1,14 @@
 {
-
+    "login": {
+        "title": "Core-o-graphy",
+        "subtitle": "Sample project",
+        "form": {
+            "error": "User or password mismatch",
+            "email_ph": "Your email",
+            "password_ph": "Your password",
+            "email": "Email",
+            "password": "Password",
+            "submit": "Submit"
+        }
+    }
 }

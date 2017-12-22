@@ -1,5 +1,7 @@
 <?php
 
+namespace CoreOGraphy;
+
 /**
  * Item
  *

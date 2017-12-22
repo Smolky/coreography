@@ -2,6 +2,11 @@
 
 namespace CoreOGraphy;
 
+use \Zend\Diactoros\ServerRequestFactory;
+use \Zend\Diactoros\Response;
+use \Zend\Diactoros\Response\SapiEmitter;
+
+
 /**
  * BaseController
  *
@@ -9,6 +14,9 @@ namespace CoreOGraphy;
  */
 abstract class BaseController {
 
+    /** @var $_request */
+    protected $_request;
+    
 
     /** @var $_template */
     protected $_template;
@@ -30,19 +38,8 @@ abstract class BaseController {
      * @package Core-o-Graphy
      */
     
-    public abstract function handleRequest () ;
+    public abstract function handleRequest ();
     
-    
-    /**
-     * handles
-     *
-     * @package Core-o-Graphy
-     */
-    
-    public function handle () {
-        $this->handleRequest ();
-        return $this->_response;
-    }
     
     
     /**
@@ -58,6 +55,10 @@ abstract class BaseController {
         
         // Store
         $this->_container = $container;
+        
+        
+        // Create the request
+        $this->_request = ServerRequestFactory::fromGlobals ($_SERVER, $_GET, $_POST, $_COOKIE, $_FILES);
         
        
         // Get class info for the current controller
@@ -81,7 +82,26 @@ abstract class BaseController {
         
         
         // Create response
-        $this->_response = new \CoreOGraphy\Response ();
+        $this->_response = new Response ();
 
     }
+    
+    
+    /**
+     * handles
+     *
+     * @package Core-o-Graphy
+     */
+    
+    public function handle () {
+    
+        // Handle request
+        $this->handleRequest ();
+    
+        
+        // Create the response
+        $emitter = new SapiEmitter();
+        $emitter->emit ($this->_response);
+    }
+    
 }

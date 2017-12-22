@@ -12,16 +12,19 @@
         
         
         <!-- Google fonts -->
-
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
         
         
         <!-- Stylesheets -->
+        <link rel="stylesheet" href="css/vendor/foundation-grid.css">
+        <link rel="stylesheet" href="css/vendor/foundation-form.css">
+        <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/vendor/vex.css">
         <link rel="stylesheet" href="css/vendor/vex-theme-plain.css">
         {% block stylesheets %}{% endblock %}
     
     </head>
-    <body>
+    <body class="{% block bodyclass %}{% endblock %}">
         
         <!-- Main content -->
         {% block content %}{% endblock %}

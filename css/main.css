@@ -1,0 +1,57 @@
+body {
+    overflow-x: hidden;
+    font-family: 'Roboto', sans-serif;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+input[type="password"] {
+    font-family: "Roboto", sans-serif;
+    outline: 0;
+    background: #f2f2f2;
+    width: 100%;
+    border: 0;
+    margin: 0 0 15px;
+    padding: 1rem;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+
+.login-page {
+    background: #666;
+    padding: 8% 0 0;
+}
+
+.login-page .grid-container {
+    background: #ffffff;
+    max-width: 360px;
+    margin: 0 auto 100px;
+    padding: 2rem 1rem 1rem 1rem;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.login-page label {
+    display: block;
+}
+
+.login-page h1 {
+    padding: 0 1rem;
+    font-weight: 300;
+    line-height: 1.33;
+}
+
+.login-page h1 small {
+    display: block;
+    font-weight: inherit;
+    color: #a71930;
+}
+
+.login-page [type="submit"] + div {
+    font-size: .75rem;
+}
+
+.login-page [type="submit"] + div a {
+    color: #a71930;
+}
