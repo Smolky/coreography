@@ -238,7 +238,7 @@ class Database {
     public function remove ($table, $condition='') {
     
         // Set the update condition
-        if (is_int ($condition)) {
+        if (is_numeric ($condition)) {
             $condition = ' ' . $table . '.id = ' . $condition;
         }
         
