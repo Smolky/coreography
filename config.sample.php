@@ -49,25 +49,3 @@ $email_password = '';
 
 /** $email_from String The 'from' account */
 $email_from = '';
-
-
-// Google Maps
-define ('GOOGLE_API_KEY', '');
-
-
-// Twitter
-/** $twitter_key String */
-define ('TWITTER_KEY', '');
-
-
-/** $twitter_secret String */
-define ('TWITTER_SECRET', '');
-
-
-/** $twitter_access_token String */
-define ('TWITTER_ACCESS_TOKEN', '');
-
-
-/** $twitter_access_token_secret String */
-define ('TWITTER_ACCESS_TOKEN_SECRET', '');
-

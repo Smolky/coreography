@@ -31,12 +31,21 @@
                 <!-- Fields -->
                 <label>
                     <div>{{ __('login_form_email') }}</div>
-                    <input type="email" name="email" autofocus required placeholder="{{ __('login_form_email_ph') }}"/>
+                    <input 
+                        autofocus 
+                        required 
+                        type="email" 
+                        name="email" 
+                        placeholder="{{ __('login_form_email_ph') }}" />
                 </label>
                 
                 <label>
                     <div>{{ __('login_form_password') }}</div>
-                    <input type="password" name="password" required placeholder="{{ __('login_form_password_ph') }}"/>
+                    <input 
+                        required 
+                        type="password" 
+                        name="password" 
+                        placeholder="{{ __('login_form_password_ph') }}" />
                 </label>
                 
                 
@@ -47,7 +56,10 @@
                 
                 
                 <div>
-                    Don't you have an account? <a href="{{ base_url }}register">Sign up</a> with us
+                    {{ __('login_go_to_register') }} 
+                    <a href="{{ base_url }}register">
+                        {{ __('login_go_to_register_action') }}
+                    </a> 
                 </div>
                 
             </form>

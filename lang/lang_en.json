@@ -1,7 +1,12 @@
 {
+    "page_404": {
+        "title": "Page not found"
+    },
     "login": {
         "title": "Core-o-graphy",
         "subtitle": "Sample project",
+        "go_to_register": "Don't you have an account?",
+        "go_to_register_action": "Sign up!",
         "form": {
             "error": "User or password mismatch",
             "email_ph": "Your email",

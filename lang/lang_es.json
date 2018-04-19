@@ -1,0 +1,19 @@
+{
+    "page_404": {
+        "title": "P\u00e1gina no encontrada"
+    },
+    "login": {
+        "title": "Core-o-graphy",
+        "subtitle": "Projecto de ejemplo",
+        "go_to_register": "\u00bfNo tienes cuenta?",
+        "go_to_register_action": "\u00a1Reg\u00edstrate!",
+        "form": {
+            "error": "El usuario o la contrase\u00f1a no encajan",
+            "email_ph": "Tu direcci\u00f3n de correo",
+            "password_ph": "Tu contrase\u00f1a",
+            "email": "Email",
+            "password": "Contrase\u00f1a",
+            "submit": "Enviar"
+        }
+    }
+}

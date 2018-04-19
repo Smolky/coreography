@@ -1,6 +1,8 @@
 <?php
 
-use CoreOGraphy\RepoUsers;
+use \CoreOGraphy\RepoUsers;
+use \CoreOGraphy\BaseController;
+
 
 /**
  * Index
@@ -10,7 +12,7 @@ use CoreOGraphy\RepoUsers;
  *
  * @package Core-o-Graphy
  */
-class Index extends \CoreOGraphy\BaseController {
+class Index extends BaseController {
     
     /**
      * handleRequest
@@ -19,20 +21,35 @@ class Index extends \CoreOGraphy\BaseController {
      */
     public function handleRequest () {
         
-        /** $_error Boolean States when the form is valid or not */
+        /** @var $_error Boolean States when the form is valid or not */
         $_error = false;
         
         
+        /** @var $params Array Get params for the request */
+        $params = $this->_request->getParsedBody ();
+        
+        
+        /** @var $is_form_submited Boolean */
+        $is_form_submited = isset ($params['action']) && 'login-form' == $params['action'];
+        
+        
         // Has the form been submitted by the user?
-        if (isset ($_POST['action']) && 'login-form' == $_POST['action']) {
+        if ($is_form_submited) {
             
-            // Get a user repository 
+            /** @var $email String The user email */
+            $email = filter_var ($params['email'], FILTER_VALIDATE_EMAIL);
+            
+            
+            /** @var $password String The user password */
+            $password = filter_var ($params['password'], FILTER_UNSAFE_RAW);
+            
+            
+            /** @var $repousers RepoUsers The user repository */
             $repousers = new RepoUsers ();
             
             
-            // Fetch user against the credentials introduced by the 
-            // user
-            $user = $repousers->getByEmailAndPassword ($_POST['email'], md5 ($_POST['password']));
+            /** @var $user User Fetch user against the credentials introduced by the user */
+            $user = $repousers->getByEmailAndPassword ($email, md5 ($password));
             
             
             // No user?! Then check the error and load again the form
@@ -46,7 +63,8 @@ class Index extends \CoreOGraphy\BaseController {
                 $_SESSION['user_id'] = $user->getId ();
                 
                 
-                // Redirect. As the user is now in session the URLs should 
+                // Redirect. 
+                // As the user is now in session the URLs should 
                 // be accessible
                 header ('Location: ' . $_SERVER['REQUEST_URI']);
                 die ();
