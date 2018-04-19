@@ -30,7 +30,7 @@ class i18nCommand extends Command {
     
     /**
      * execute
-     
+     *
      * @param $input InputInterface
      * @param $output OutputInterface
      *
