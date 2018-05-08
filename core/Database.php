@@ -156,18 +156,31 @@ class Database {
      *
      * @param $table String
      * @param $data array
+     * @param $on_duplicate_key String|null
      *
      * @return int
      *
      * @package Core-o-Graphy
      */
     
-    public function insert ($table, $data) {
+    public function insert ($table, $data, $on_duplicate_key=null) {
+    
+        /** @var $sql_on_duplicate_key String */
+        $sql_on_duplicate_key = 'ON DUPLICATE KEY UPDATE id=id, updated_at=NOW()';
+    
+        
+        // Attach user conditions
+        if ($on_duplicate_key) {
+            $sql_on_duplicate_key .= ', ' . $on_duplicate_key;
+        }
+        
+        
+    
     
         // Prepare SQL
         $sql = "INSERT INTO " . $table;
         $sql .= " (" . implode (',', array_keys ($data)) . ")";
-        $sql .= " VALUES (\"" . implode ('", "', array_values ($data)) . "\")";
+        $sql .= " VALUES (\"" . implode ('", "', array_values ($data)) . "\") " . $sql_on_duplicate_key;
         
         
         // Run
@@ -175,6 +188,7 @@ class Database {
         $this->_query->execute ();
         
         
+        // Return inserted ID
         return $this->_pdo->lastInsertId ();
     
     }
