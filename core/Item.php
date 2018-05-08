@@ -107,6 +107,10 @@ class Item {
         /** @var $key String The field without "set" */
         $key = preg_replace ('/^set/', '', $name);
     
+    
+        // Convert to lowercase
+        $key = mb_strtolower ($key);
+        
         
         // Store value
         $this->_data[$key] = $value;
