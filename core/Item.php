@@ -103,7 +103,13 @@ class Item {
      */
      
     public function __set ($name, $value) {
-        $this->_data[$name] = $value;
+    
+        /** @var $key String The field without "set" */
+        $key = preg_replace ('/^set/', '', $name);
+    
+        
+        // Store value
+        $this->_data[$key] = $value;
     }
     
     
