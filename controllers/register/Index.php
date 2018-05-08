@@ -1,6 +1,8 @@
 <?php
 
-use CoreOGraphy\RepoUsers;
+use \CoreOGraphy\RepoUsers;
+use \CoreOGraphy\BaseController;
+
 
 /**
  * Index
@@ -10,7 +12,7 @@ use CoreOGraphy\RepoUsers;
  *
  * @package Core-o-Graphy
  */
-class Index extends \CoreOGraphy\BaseController {
+class Index extends BaseController {
     
     /**
      * handleRequest
@@ -23,27 +25,33 @@ class Index extends \CoreOGraphy\BaseController {
         $_error = false;
         
         
-        // Get params for the request
+        /** @var $params Array Get params for the request */
         $params = $this->_request->getParsedBody ();
         
         
+        /** @var $is_form_submited Boolean */
+        $is_form_submited = isset ($params['action']) && 'register-form' == $params['action'];
+        
+        
         // Has the form been submitted by the user?
-        if (isset ($params['action']) && 'register-form' == $params['action']) {
+        if ($is_form_submited) {
 
-            // Get params
+            /** @var $email String The user email */
             $email = filter_var ($params['email'], FILTER_SANITIZE_EMAIL);
-            $password = $params['password'];        
+            
+            
+            /** @var $password String The user password */
+            $password = $params['password'];
         
             
-            // Get a user repository 
+            /** @var $repousers RepoUsers The user repository */
             $repousers = new RepoUsers ();
             
             
             // Send an email to the user
             $send_email = new Email ('validate-account.html', ['link' => FULL_URL . 'validate?token=' . $uid]);
             $send_email->setTo ($email);
-            $send_email->send ();            
-            
+            $send_email->send ();
             
         }
         

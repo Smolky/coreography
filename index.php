@@ -1,90 +1,50 @@
 <?php
 
-use Pimple\Container;
-use Symfony\Component\Debug\Debug;
-
-
 /**
- * CorpusClassifier
+ * CoreOGraphy
  *
- * This application allows to manage linguistic corpus
- * based on tweets from twitter. This application allows 
- * to manual classification of the linguistic corpus
+ * This is just a simple PHP framework for custom purposes
  *
  * @author José Antonio García Díaz <joseantonio.garcia8@um.es>
  *
  * @package Core-o-Graphy
  */
 
-// Require configuration
-require 'config.php';
-
- 
-// Constants
-define ('PRODUCTION', $production);
-define ('BASE_URL', $base_url);
-define ('VERSION', 0.1);
-
-
-// Set the error level based on the stage
-if (PRODUCTION) {
-    error_reporting(0);
-    ini_set('display_errors', 0);
-} else {
-    ini_set ('display_errors', 1);
-    ini_set ('display_startup_errors', 1);
-    error_reporting (E_ALL); 
-}
-
-
 // Require vendor
-require 'vendor/autoload.php';
-
-
-// Activate Debug
-if ( ! PRODUCTION) {
-    Debug::enable ();
-}
-
-
-// Dependency container
-$container = new Container ();
-
-
-// Require core libs
-require ('custom/functions.php');
-
-
-// Database connection
-// Database info is stored at config.php
-if ($user) {
-    $database = new \CoreOGraphy\Database ($dsn, $user, $password);
-    $container['connection'] = $database;
-    $container['pdo'] = $database->connect ();
-}
+require_once __DIR__ . '/core/bootstrap.php';
 
 
 // Template system
 Twig_Autoloader::register();
 
 
-// Create and configure the template system
-// @link http://whateverthing.com/blog/2015/02/17/twig-tips-configuring-cache/
-$twig_configuration = array ();
+/**
+ * @var $twig_configuration Array
+ *
+ * Create and configure the template system
+ *
+ * @link http://whateverthing.com/blog/2015/02/17/twig-tips-configuring-cache/
+ */
+$twig_configuration = [];
+
 if (PRODUCTION) {
-    $twig_configuration = array (
-        'cache' => __DIR__ . '/cache/templates',
+    $twig_configuration = [
+        'cache'       => CACHE_DIR . 'templates',
         'auto_reload' => true
-    );
+    ];
 }
 
-$loader = new Twig_Loader_Filesystem ("templates");
+
+/** @var $loader Twig_Loader_Filesystem Where the templates are stored */
+$loader = new Twig_Loader_Filesystem ('templates');
+
+
+/** @var $twig Twig_Environment Twig global object */
 $twig = new Twig_Environment ($loader, $twig_configuration);
 
 
 // Add global variables to the template
 $twig->addGlobal ('base_url', BASE_URL);
-$twig->addGlobal ('google_api_key', GOOGLE_API_KEY);
 $twig->addGlobal ('version', PRODUCTION ? VERSION : rand (1, 10000));
 
 
@@ -93,58 +53,40 @@ $container['loader'] = $loader;
 $container['templates'] = $twig;
 
 
-// Configure the transform layer
-$transport = Swift_SmtpTransport::newInstance ($email_server, $email_port, $email_protocol)
-    ->setUsername ($email_username)
-    ->setPassword ($email_password)
-    ->setStreamOptions (array ('ssl' => array ('allow_self_signed' => true, 'verify_peer' => false)))
-;
-
-$container['transport'] = $transport;
-
-
-// Translations
-$i18n = new i18n ();
-$i18n->setCachePath ('./cache/lang');
-$i18n->setFilePath ('./lang/lang_{LANGUAGE}.json');
-$i18n->setFallbackLang ('en');
-$i18n->setPrefix ('I');
-$i18n->setSectionSeperator ('_');
-$i18n->init();
-
-$container['i18n'] = $i18n;
-
-
-
-// Attach to TWIG the global language object
-$i18n_function = new Twig_SimpleFunction ('__', function ($method) {
-    try {
-        return call_user_func ('I' . '::' . $method); 
-    } catch (Exception $e) {
-        return '';
-    }
+// If translations services are loaded, then 
+// attach it to TWIG as a helper function
+if ($container['i18n']) {
     
-});
-$twig->addFunction ($i18n_function);
+    $twig->addFunction (new Twig_SimpleFunction ('__', function ($method) {
+        try {
+            return call_user_func ('I' . '::' . $method); 
+            
+        } catch (Exception $e) {
+            return '';
+        }
+    }));
+}
 
 
 
-// Create the router
-$router = new AltoRouter();
+/** @var $router AltoRouter The service that resolves routes */
+$router = new AltoRouter ();
+
+
+// Configure the basepath of the routes
 $router->setBasePath (ltrim (BASE_URL, '/'));
 
+
+// Store the routing system as a service
 $container['router'] = $router;
 
 
-session_start();
+// Attach routes
+require_once __DIR__ . '/routes.php';
 
 
-// Attach routers
-require ('routes.php');
-
-
-// match current request URL
-$match = $router->match();
+/** @var $match callable match current request URL */
+$match = $router->match ();
 
 
 // Determine which controller will handle the current route
@@ -161,5 +103,4 @@ if ($match && is_callable ($match['target'])) {
 
 
 // Handle the controller
-$body = $controller->handle ();
-echo $body;
+echo $controller->handle ();
