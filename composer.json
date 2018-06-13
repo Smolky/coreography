@@ -2,6 +2,9 @@
     "name": "smolky/coreography",
     "type": "project",
     "version": "1.0.0-dev",
+    
+    "minimum-stability": "dev",
+    
     "description": "The Core-o-Graphy Framework.",
     "keywords": ["framework", "coreograhpy"],
     
