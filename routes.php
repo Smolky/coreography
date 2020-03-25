@@ -12,7 +12,6 @@ $router->map ('GET', '/', function () {
 
 // Login
 $router->map ('GET|POST', '/login', function () {
-
     // To the home page, the user must be logged
     require __DIR__ . '/controllers/login/Index.php';
     return new Index ();

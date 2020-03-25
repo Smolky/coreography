@@ -1,5 +1,9 @@
 <?php
 
+use \Twig\Loader\FilesystemLoader;
+use \Twig\Environment;
+use \Twig\TwigFunction;
+
 /**
  * CoreOGraphy
  *
@@ -13,9 +17,6 @@
 // Require vendor
 require_once __DIR__ . '/core/bootstrap.php';
 
-
-// Template system
-Twig_Autoloader::register();
 
 
 /**
@@ -36,11 +37,11 @@ if (PRODUCTION) {
 
 
 /** @var $loader Twig_Loader_Filesystem Where the templates are stored */
-$loader = new Twig_Loader_Filesystem ('templates');
+$loader = new FilesystemLoader ('templates');
 
 
-/** @var $twig Twig_Environment Twig global object */
-$twig = new Twig_Environment ($loader, $twig_configuration);
+/** @var $twig Environment Twig global object */
+$twig = new Environment ($loader, $twig_configuration);
 
 
 // Add global variables to the template
@@ -57,7 +58,7 @@ $container['templates'] = $twig;
 // attach it to TWIG as a helper function
 if ($container['i18n']) {
     
-    $twig->addFunction (new Twig_SimpleFunction ('__', function ($method) {
+    $twig->addFunction (new TwigFunction ('__', function ($method) {
         try {
             return call_user_func ('I' . '::' . $method); 
             

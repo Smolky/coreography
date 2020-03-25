@@ -1,7 +1,8 @@
 <?php
 
-use Pimple\Container;
-use Symfony\Component\Debug\Debug;
+use \Pimple\Container;
+use \Symfony\Component\Debug\Debug;
+use \Symfony\Component\Debug\ErrorHandler;
 
 
 /**
@@ -13,11 +14,19 @@ use Symfony\Component\Debug\Debug;
  *
  * @package Core-o-Graphy
  */
-
+ 
+set_time_limit (0);
+ini_set ('memory_limit', -1);
+ini_set ('default_charset', 'UTF-8');
+mb_internal_encoding ('UTF-8');
+mb_regex_encoding ('UTF-8');
+iconv_set_encoding ('internal_encoding', 'UTF-8');
+iconv_set_encoding ('output_encoding', 'UTF-8');
 
 // Require vendor
 require_once __DIR__ . '/../vendor/autoload.php';
 
+Debug::enable();
 
 // Require configuration
 require_once __DIR__ . '/../config.php';
@@ -61,7 +70,7 @@ if ($user) {
 
 
 // Configure the transform layer
-$transport = Swift_SmtpTransport::newInstance ($email_server, $email_port, $email_protocol)
+$transport = (new Swift_SmtpTransport ($email_server, $email_port, $email_protocol))
     ->setUsername ($email_username)
     ->setPassword ($email_password)
     ->setStreamOptions (array ('ssl' => array ('allow_self_signed' => true, 'verify_peer' => false)))
@@ -85,3 +94,7 @@ $container['i18n'] = $i18n;
 
 // Start session
 session_start ();
+
+
+// Custom bootstraping
+require_once __DIR__ . '/../custom/bootstrap.php';

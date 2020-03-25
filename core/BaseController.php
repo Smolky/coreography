@@ -4,7 +4,9 @@ namespace CoreOGraphy;
 
 use \Zend\Diactoros\ServerRequestFactory;
 use \Zend\Diactoros\Response;
-use \Zend\Diactoros\Response\SapiEmitter;
+use \Zend\Diactoros\Request;
+use \Zend\HttpHandlerRunner\Emitter\SapiEmitter;
+
 
 
 /**
